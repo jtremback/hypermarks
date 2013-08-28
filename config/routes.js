@@ -15,7 +15,7 @@ function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.redirect('/login')
+  res.end(401)
 }
 
 /**
@@ -29,6 +29,12 @@ module.exports = function (app, passport) {
   // browserify bookmarklet code
   app.get('/js/bookmarklet.js', browserify('../bookmarklet/bookmarklet.js'));
 
+  // post url
+  app.post('/create', ensureAuthenticated, function (req, res) {
+    console.log(req)
+  });
+
+  // Auth routes
   app.get('/login', function (req, res) {
     res.render('login', {
       user: req.user
